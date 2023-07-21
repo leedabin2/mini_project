@@ -33,6 +33,7 @@ public class TempClient {
                     String ip_address = ipline.split(": ")[1];
                     System.out.println("Your IP address : " + ip_address);
                     System.out.println(lines[3]);
+                    System.out.println(lines[4]);
                 } else {
                     System.out.println("Response format error!");
                 }
