@@ -6,11 +6,11 @@
 
 const char* ssid = "swcore";
 const char* password = "inha123*";
-//OLED_U8G2 oled; // create oled object
+
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 WebServer server(80);  // create WebServer object, port
 int tempSensor = A2; // temperature sensor
-// formula
+
 int Vo;
 double R1 = 10000;
 double logR2, R2, T, Tc;
@@ -67,11 +67,12 @@ void handleRootEvent() {
   Tc = T - 273.15;  // celsius
   Tf = (Tc * 9.0/5.0) + 32.0;  // fahrenheit
 
-  String message = "Welcome Inha SmartFactory WebServer!\n\n";
-  message = message + "Temperature: " + String(Tc) + "C " + "(" + String(Tf) + "F)";
+  String message = "Temperature WebServer!\n\n";
   message += "Your IP address: " + clientIP;
-  message = message + "\nTemperature: " + String(Tc) + "C " + "(" + String(Tf) + "F)";
+  message = message + "\nCelsius: " + String(Tc);
+  message += "\nFahrenheit: " + String(Tf) ;
   server.send(200, "text/plain", message);  // status code 200(OK), format, message
+  Serial.println(message);
   Serial.println(message); // monitoring
 
   Serial.println(clientIP);
