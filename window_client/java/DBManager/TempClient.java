@@ -1,3 +1,5 @@
+package DBManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,8 +8,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class TempClient {
+    private static final String DB_url = "jdbc:mysql://localhost:3306/temperature_db?useSSL=false&serverTimezone=Asia/Seoul";
+    private static final String DB_user = "root";
+    private static final String DB_password = "ejk127ekqls$";
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[]args) throws MalformedURLException {
         String urlStr = "http://165.246.116.32";
         try {
             URL url = new URL(urlStr);
