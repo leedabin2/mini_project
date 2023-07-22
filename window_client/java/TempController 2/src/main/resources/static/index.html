@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>실시간 온도 그래프</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>test</h1>
+    <div style="width: 80%; margin: auto;">
+        <canvas id="temperatureChart" height="200"></canvas>
+    </div>
+    <script>
+        async function getTemperatureData() {
+            try {
+                const response = await fetch('/api/temperatures');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('온도 데이터를 가져오는 중 에러 발생:', error);
+            }
+        }
+
+        async function updateChart() {
+            const data = await getTemperatureData();
+            if (data) {
+                temperatureData.push(data);
+                updateTemperatureChart();
+            }
+            setTimeout(updateChart, 10000); // 10초마다 그래회프 업데이트 (필요에 따라 조정 가능)
+        }
+
+        function updateTemperatureChart() {
+            const celsiusData = temperatureData.map(item => item.celsius);
+            const labels = temperatureData.map((_, index) => `데이터 ${index + 1}`);
+
+            const ctx = document.getElementById('temperatureChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '온도 (섭씨)',
+                        data: celsiusData,
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        fill: false,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: '데이터 포인트',
+                            },
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: '온도 (섭씨)',
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                        },
+                    },
+                },
+            });
+        }
+
+        const temperatureData = [];
+        updateChart();
+    </script>
+</body>
+</html>
